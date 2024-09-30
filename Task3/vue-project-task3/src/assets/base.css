@@ -1,0 +1,9 @@
+@import 'vuetify/dist/vuetify.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+body {
+  min-height: 100vh;
+  background-color: burlywood;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
