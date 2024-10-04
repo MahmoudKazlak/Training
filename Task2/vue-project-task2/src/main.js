@@ -15,6 +15,12 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
+
+import '@vueform/multiselect/themes/default.css'
+
+
 const app = createApp(App)
 const vuetify = createVuetify({
   components,
@@ -23,7 +29,11 @@ const vuetify = createVuetify({
     defaultSet: 'mdi', 
   },
 })
-
+app.use(PrimeVue, {
+  theme: {
+      preset: Aura
+  }
+})
 app.use(vuetify)
 app.use(createPinia())
 app.use(router)

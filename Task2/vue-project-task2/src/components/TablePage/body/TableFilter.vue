@@ -1,174 +1,250 @@
 <template>
-  <v-card
-    flat
-    height="170px"
-    class="mt-10 card-height"
-  >
-    <v-row class="my-4 align-center">
-      <!-- Search -->
-      <v-col
-        cols="12"
-        md="9"
-        class="mb-3 d-flex gap-3 align-items-center"
-      >
-        <v-text-field
+  <div class="d-flex justify-content-between align-items-start">
+    <!-- Left side items -->
+    <div class="d-flex gap-2">
+      <div style="position: relative; display: inline-block; width: 176px;">
+        <!-- Search  -->
+        <input
+          type="text"
+          style="width: 100%; height: 40px; padding-left: 35px;"
+          class="rounded border"
           v-model="search"
-          label="Search"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          hide-details
-          single-line
-        ></v-text-field>
-
-        <!-- All -->
-        <v-select
-          v-model="all"
-          :items="items"
-          variant="outlined"
-          hide-details
-          single-line
-          item-color="#0601ae"
-        ></v-select>
-
-        <!-- Tags -->
-        <v-select
-          v-model="selectedTags"
-          :items="tags"
-          label="Tags"
-          chips
-          multiple
-          variant="outlined"
-          hide-details
-          single-line
-        ></v-select>
-
-        <!-- Export -->
-        <IcoDropdown
-          :items="['Export as PDF', 'Export as Excel']"
-          :icons="[pdf, excel]"
+          placeholder="Search"
+        />
+        <v-icon
+          icon="mdi-magnify"
+          style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: gray;"
+        />
+      </div>
+      <Multiselect
+        v-model="all"
+        :options="items"
+        style="height: 36px; width: 176px;"
+      />
+      <!-- Tags -->
+      <Multiselect
+        v-model="selectedTags"
+        mode="tags"
+        placeholder="Tags"
+        :close-on-select="false"
+        :searchable="true"
+        :create-option="true"
+        :options="tags"
+        style="height: 36px; width: 306px;"
+      />
+      <!-- Export -->
+      <div class="dropdown rounded border gray">
+        <button
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style="width: 55px; text-align: center; height: 100%; background-color: light-100;"
         >
-          <template #dropBtn>
-            <v-btn
-              variant="outlined"
-              class="text-capitalize gray h-max"
-            >Export</v-btn>
-          </template>
-        </IcoDropdown>
-
-        <!-- Refresh -->
-        <v-btn
-          variant="outlined"
-          class="gray"
-          aria-label="Refresh"
+          Export
+        </button>
+        <ul
+          class="dropdown-menu w-100"
+          aria-labelledby="dropdownMenuButton1"
         >
-          <v-icon icon="mdi-refresh"></v-icon>
-        </v-btn>
-      </v-col>
-
-      <!-- Settings -->
-      <v-col
-        cols="12"
-        md="3"
-        class="mb-3 d-flex align-items-center justify-end"
-        block
-      >
-        <v-menu
-          v-model="settingsMenu"
-          activator="parent"
-        >
-          <template #activator="{ props }">
-            <v-btn
-              variant="outlined"
-              class="gray fullw"
-              aria-label="Settings"
-              v-bind="props"
-            >
-              <v-icon icon="mdi-cog"></v-icon>
-            </v-btn>
-          </template>
-
-          <v-list
-            style="max-height: 300px; overflow-y: auto; padding: 10px"
-            @wheel.stop
+          <li
+            class="mb-1 cursor-pointer"
+            v-for="(item, index) in btnItems"
+            :key="item"
           >
-            <v-list-item>
-              <v-list-item-content>
-                <h4
-                  class="text-center"
-                  style="border-bottom: 2px solid #ccc; padding-bottom: 8px"
-                >
-                  Choose Columns
-                </h4>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item
-              v-for="(item, index) in settingsOptions"
-              :key="index"
-              class="text-dark fw-bold"
-              style="margin-bottom: 0px;"
-            >
-              <v-list-item-content>
-                <v-checkbox
-                  v-model="selectedSettings"
-                  :label="item"
-                  :value="item"
-                  @click.stop
-                  color="green"
-                ></v-checkbox>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-col>
-    </v-row>
-  </v-card>
+            <img
+              :src="icons[index]"
+              alt="icon"
+              class="icon-img"
+              style="width: 24px; height: 24px; object-fit: contain;"
+            />
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+      <!-- Refresh -->
+      <button
+        class="rounded border"
+        style="width: 30px; text-align: center; height: 40px; background-color: light-100; color: gray;"
+      >
+        <v-icon icon="mdi-refresh"></v-icon>
+      </button>
+    </div>
+
+    <!-- Settings Menu (right-aligned) -->
+    <div style="position: relative; display: inline-block;">
+      <button
+        class="rounded border"
+        style="width: 30px; text-align: center; height: 40px; background-color: light-100; color: gray;"
+        @click="showSettingsMenu = !showSettingsMenu"
+      >
+        <v-icon icon="mdi-cog"></v-icon>
+      </button>
+      <div
+        v-if="showSettingsMenu"
+        class="settings-dropdown"
+      >
+        <div class="dropdown-header">Choose Columns</div>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.Name"
+            />
+            <span class="label-text">Name</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.LastUpdate"
+            />
+            <span class="label-text">Last Update</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.Status"
+            />
+            <span class="label-text">Status</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.Odometer"
+            />
+            <span class="label-text">Odometer</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.LicenseExp"
+            />
+            <span class="label-text">License Exp</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.LicenseExp"
+            />
+            <span class="label-text">test</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.LicenseExp"
+            />
+            <span class="label-text">test</span>
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="checkbox"
+              v-model="selectedSettings.LicenseExp"
+            />
+            <span class="label-text">test</span>
+          </label>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import IcoDropdown from '../header/nav/IcoDropdown.vue'
+import Multiselect from '@vueform/multiselect'
 
-const pdf = '/icons/PDF.ico'
+const pdf = '/icons/output-onlinepngtools (1).ico'
 const excel = '/icons/Excel.ico'
+const icons = [pdf, excel]
+const btnItems = ['Export as PDF', 'Export as Excel']
+
 const items = ['All', 'licenses expired', 'licenses not expired', 'with tracking']
 const tags = ['Test1', 'Test2', 'Test3', 'Test4', 'Test5']
 
 const all = ref('All')
 const search = ref('')
 const selectedTags = ref([])
-const settingsMenu = ref(false)
-const selectedSettings = ref([])
-const settingsOptions = [
-  'Name',
-  'Last Update',
-  'Status',
-  'Odometer',
-  'License Exp',
-  'Test',
-  'Test2'
-]
+const selectedSettings = ref({
+  Name: false,
+  LastUpdate: false,
+  Status: false,
+  Odometer: false,
+  LicenseExp: false
+})
+const showSettingsMenu = ref(false)
 </script>
 
-<style scoped>
-.gray {
-  border-color: rgb(189, 184, 184);
-}
-.h-max {
-  height: auto;
-}
-.fw-bold {
-  font-weight: bold;
+<style>
+.icon-img {
+  width: 24px; 
+  height: 24px;
+  object-fit: contain;
+  margin-right: 8px;
 }
 
-@media (max-width: 600px) {
-  .mb-3 {
-    margin-bottom: 16px;
-  }
-  .card-height {
-    height: 220px !important;
-  }
-  .fullw {
-    width: 100%;
-  }
+.settings-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 2000; 
+  width: 200px;
+  max-height: 200px; 
+  overflow-y: auto; 
+  display: block;
+}
+.dropdown-header {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.checkbox-group {
+  padding: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  border: 1px solid gray; 
+  border-radius: 4px;
+  background-color: white;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkbox:checked {
+  background-color: green;
+}
+
+.checkbox:checked::before {
+  content: '✓';
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  font-size: 16px; 
+}
+
+.label-text {
+  margin-left: 10px;
 }
 </style>

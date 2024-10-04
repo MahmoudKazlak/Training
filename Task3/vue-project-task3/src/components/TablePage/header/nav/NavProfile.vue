@@ -1,20 +1,20 @@
 <template>
-  <div class="dropdown">
+  <div class="dropdown me-11 position-relative">
     <a
-      class="btn dropdown-toggle d-flex align-items-center"
+      class="btn dropdown-toggle d-flex align-items-center ps-5"
       href="#"
       role="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
-      style="background-color: #f0f0f0; color: black; text-decoration: none"
+      style="color: black; text-decoration: none; border-radius: 40px;"
     >
       <div
-        class="icon-circles me-2 justify-content-center"
+        class="icon-circles-p position-absolute left-0"
         :style="{ backgroundColor: circleColor }"
       >
         {{ firstLetters }}
       </div>
-      {{ name }}
+      <span class="dropdown-name ms-4">{{ name }}</span>
     </a>
 
     <ul class="dropdown-menu dropdown-menu-end">
@@ -33,26 +33,25 @@
       </li>
 
       <li class="text-center border-bottom">
-        <button class="btn border d-flex p-2 mx-auto mb-8">Edit Profile</button>
+        <button class="btn border d-flex p-2 mx-auto mb-8 fw-medium gray">Edit Profile</button>
       </li>
 
       <li class="border-bottom">
         <a
-          class="dropdown-item mt-4 mb-4"
+          class="dropdown-item mt-4 mb-4 gray"
           href="#"
-        >Switch Accounts</a>
+        >Switch accounts</a>
       </li>
 
       <li>
         <a
-          class="dropdown-item mt-3"
+          class="dropdown-item mt-3 fw-medium"
           href="#"
         >Logout</a>
       </li>
     </ul>
   </div>
 </template>
-
 
 <script setup>
 import { computed, ref } from 'vue'
@@ -66,7 +65,7 @@ const props = defineProps({
 const firstLetters = computed(() => {
   return props.name
     .split(' ')
-    .map((word) => word.charAt(0))
+    .map((word) => word.charAt(0).toUpperCase())
     .join('')
 })
 
@@ -82,21 +81,32 @@ function generateRandomColor() {
 }
 </script>
 
-<style>
-.icon-circles {
+<style scoped>
+.icon-circles-p {
   border-radius: 50%;
   padding: 10px;
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   align-items: center;
   justify-content: center;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dropdown-toggle {
+  padding-left: 50px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .dropdown-toggle:hover {
-  background-color: #6c757d;
-  color: #ffffff;
-  text-decoration: none;
+  background-color: #e0e0e0;
+  color: #000000;
+  border-radius: 40px;
 }
 
 .dropdown-toggle:focus,
@@ -105,8 +115,8 @@ function generateRandomColor() {
 }
 
 .dropdown-menu {
-  width: 100%;
-  max-width: 340px;
+  width: 90%;
+  max-width: 310px;
 }
 
 .dropdown-menu li.text-center {
@@ -117,9 +127,30 @@ function generateRandomColor() {
   border-radius: 5px;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.gray {
+  color: gray !important;
+}
+.dropdown-toggle {
+  padding-left: 50px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  border-radius: 40px;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
+.dropdown-toggle:active {
+  background-color: #dfe7ee;
+  color: #000000;
+  border-radius: 40px;
+  text-decoration: none;
+}
+
+.dropdown-toggle:focus {
+  box-shadow: none;
 }
 
 @media (min-width: 768px) {

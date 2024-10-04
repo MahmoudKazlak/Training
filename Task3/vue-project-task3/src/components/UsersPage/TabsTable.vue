@@ -12,36 +12,49 @@
           <td>{{ user.email }}</td>
           <td>{{ user.type }}</td>
           <td>{{ user.createdDate }}</td>
-          <td class="text-center d-flex justify-content-between">
-            <UserDialog
-              icon="mdi-pencil"
-              :userObj="user"
-              @saveUser="(event) => {
-        console.log('Received event:', event);
-        console.log('User ID being passed:', user.id);
+          <td class="text-center d-flex justify-content-center">
+            <v-menu offset-y>
+              <template #activator="{ isActive, props }">
+                <v-icon
+                  v-bind="props"
+                  @click="isActive = !isActive"
+                >
+                  mdi-dots-vertical
+                </v-icon>
+              </template>
+              <v-list class="d-flex">
+                <v-list-item>
+                  <UserDialog
+                    icon="mdi-pencil"
+                    :userObj="user"
+                    @editUser="(event) => {
+                      console.log('Received event:', event);
+                      console.log('User ID being passed:', user.id);
 
-        console.log('Before editing users:', usersStore.users);
-        
-        usersStore.editUser(event, user.id);
-        
-        console.log('After editing users:', usersStore.users);
-        console.log('Done');
-      }"
-            >
-              <template #EditUser> </template>
-            </UserDialog>
-            <UserDialog
-              icon="mdi-account-details-outline"
-              :userObj="user"
-            >
-              <template #ViewUser> </template>
-            </UserDialog>
-            <v-btn
-              icon
-              @click="openDeleteDialog(user.id)"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+                      console.log('Before editing users:', usersStore.users);
+                      
+                      usersStore.editUser(event, user.id);
+                      
+                      console.log('After editing users:', usersStore.users);
+                      console.log('Done');
+                    }"
+                  >
+                    <template #EditUser> </template>
+                  </UserDialog>
+                </v-list-item>
+                <v-list-item>
+                  <UserDialog
+                    icon="mdi-account-details-outline"
+                    :userObj="user"
+                  >
+                    <template #ViewUser> </template>
+                  </UserDialog>
+                </v-list-item>
+                <v-list-item @click="openDeleteDialog(user.id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </td>
         </tr>
       </tbody>
@@ -102,16 +115,15 @@ function confirmDelete() {
 <style scoped>
 @media (max-width: 600px) {
   .table-responsive-wrapper {
-  overflow: auto;
-  width: 51%;
-}
+    overflow: auto;
+    width: 51%;
+  }
 
-.table {
-  width: 100%;
-  min-width: 900px; 
-  table-layout: fixed;
-}
-
+  .table {
+    width: 100%;
+    min-width: 900px;
+    table-layout: fixed;
+  }
 }
 
 .table-responsive-wrapper::-webkit-scrollbar {

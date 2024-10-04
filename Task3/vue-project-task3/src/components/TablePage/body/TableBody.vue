@@ -1,7 +1,7 @@
 <template>
   <tbody>
     <tr
-      v-for="user in userStore.users"
+      v-for="user in testStore.users"
       :key="user.id"
     >
       <td>{{ user.id }}</td>
@@ -14,7 +14,7 @@
   </tbody>
 </template>
 <script setup>
-import { useTestStore } from '@/stores/TestStore.js'
-let userStore = useTestStore()
-await userStore.fill()
+import { useTestStore } from '@/stores/TestStore'
+let testStore = useTestStore()
+testStore.fill()
 </script>

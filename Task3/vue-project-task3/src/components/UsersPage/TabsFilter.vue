@@ -110,7 +110,7 @@
 import { ref } from 'vue'
 import IcoDropdown from '../TablePage/header/nav/IcoDropdown.vue'
 import TabsTable from './TabsTable.vue'
-import UserDialog from './Dialogs/UserDialog.vue';
+import UserDialog from './Dialogs/UserDialog.vue'
 const pdf = '/icons/PDF.ico'
 const excel = '/icons/Excel.ico'
 
@@ -128,7 +128,13 @@ const settingsOptions = [
 ]
 </script>
 
-<style scoped>
+<style >
+.v-checkbox .v-selection-control {
+  min-height: 0 !important;
+}
+.v-input__details {
+  display: none !important;
+}
 .gray {
   border-color: rgb(189, 184, 184);
 }
@@ -159,6 +165,4 @@ const settingsOptions = [
     height: 220px !important;
   }
 }
-
-
 </style>

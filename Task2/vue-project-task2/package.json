@@ -16,9 +16,12 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@kalimahapps/vue-icons": "^1.7.1",
     "@mdi/font": "^7.4.47",
+    "@primevue/themes": "^4.0.7",
+    "@vueform/multiselect": "^2.6.10",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "pinia": "^2.1.7",
+    "primevue": "^4.0.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
     "vuetify": "^3.7.2"

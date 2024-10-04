@@ -2,6 +2,7 @@
   <div class="home-container">
     <nav class="nav-links">
       <router-link to="/Users">Users Page</router-link>
+      <router-link to="/Table">Table Page</router-link>
     </nav>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="icon-circle me-3"
+    class="icon-circle"
     v-if="$slots.default"
     :style="{ backgroundColor: color }"
   >
@@ -19,7 +19,7 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <div class="icon-circle me-3">
+      <div class="icon-circle">
         <slot name="drop"></slot>
       </div>
     </button>
@@ -53,14 +53,14 @@
       aria-labelledby="dropdownMenuButton1"
     >
       <li
-        class="ml-2 mb-1 cursor-pointer"
+        class=" mb-1 cursor-pointer"
         v-for="(item, index) in items"
         :key="item"
       >
         <img
           :src="icons[index]"
           alt="icon"
-          class="me-2 icon-img"
+          class="icon-img"
         />
         {{ item }}
       </li>
@@ -74,7 +74,6 @@ defineProps({ color: String, items: Array, icons: Array })
 .icon-circle {
   background-color: #f0f0f0;
   border-radius: 50%;
-  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;

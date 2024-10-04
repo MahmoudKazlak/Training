@@ -261,10 +261,7 @@
       scrim="rgba(0, 0, 0, 0.7)"
     >
       <template v-slot:activator="{ props: activatorProps }">
-        <v-btn
-          icon
-          v-bind="activatorProps"
-        >
+        <v-btn v-bind="activatorProps">
           <slot name="ViewUser">
             <v-icon>{{ icon }}</v-icon>
           </slot>
@@ -361,7 +358,7 @@
                 sm="6"
                 class="sm-center"
               >
-                <v-label >
+                <v-label>
                   Domain
                 </v-label>
                 <p class="fw-bold">
@@ -454,10 +451,7 @@
       scrim="rgba(0, 0, 0, 0.7)"
     >
       <template v-slot:activator="{ props: activatorProps }">
-        <v-btn
-          icon
-          v-bind="activatorProps"
-        >
+        <v-btn v-bind="activatorProps">
           <slot name="EditUser">
             <v-icon>{{ icon }}</v-icon>
           </slot>
@@ -694,7 +688,6 @@ const { icon, userObj = {} } = defineProps({
   icon: String,
   userObj: Object
 })
-import { defineEmits } from 'vue'
 
 const emit = defineEmits(['editUser'])
 const editUser = () => {
